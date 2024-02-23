@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    flashmind_tauri_lib::run()
+	flashmind_tauri_lib::run()
 }
