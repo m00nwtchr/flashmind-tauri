@@ -1,7 +1,7 @@
 {
-	"productName": "flashmind-tauri",
+	"productName": "FlashMind",
 	"version": "0.0.0",
-	"identifier": "com.tauri.dev",
+	"identifier": "io.github.m00nwtchr.flashmind",
 	"build": {
 		"beforeDevCommand": "pnpm dev",
 		"devUrl": "http://localhost:1420",

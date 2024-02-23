@@ -6,10 +6,10 @@ plugins {
 
 android {
     compileSdk = 33
-    namespace = "com.tauri.flashmind_tauri"
+    namespace = "io.github.m00nwtchr.flashmind"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
-        applicationId = "com.tauri.flashmind_tauri"
+        applicationId = "io.github.m00nwtchr.flashmind"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

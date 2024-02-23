@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">flashmind-tauri</string>
-    <string name="main_activity_title">flashmind-tauri</string>
+    <string name="app_name">FlashMind</string>
+    <string name="main_activity_title">FlashMind</string>
 </resources>
