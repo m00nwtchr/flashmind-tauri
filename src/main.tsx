@@ -3,12 +3,19 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-import "./index.css";
 import { routeTree } from "./routeTree.gen";
+import "./index.css";
+import "@fontsource-variable/inter";
 
-const router = createRouter({ routeTree });
 const queryClient = new QueryClient();
+const router = createRouter({
+	routeTree,
+	context: {
+		queryClient,
+	},
+	defaultPreload: "intent",
+	defaultPreloadStaleTime: 0,
+});
 
 declare module "@tanstack/react-router" {
 	interface Register {
@@ -24,6 +31,6 @@ if (rootElement) {
 				<RouterProvider router={router} />
 				<ReactQueryDevtools />
 			</QueryClientProvider>
-		</React.StrictMode>
+		</React.StrictMode>,
 	);
 }
