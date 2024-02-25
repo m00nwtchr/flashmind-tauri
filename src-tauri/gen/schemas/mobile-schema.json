@@ -140,6 +140,113 @@
                 "identifier": {
                   "oneOf": [
                     {
+                      "description": "http:default -> Allows all fetch operations",
+                      "type": "string",
+                      "enum": [
+                        "http:default"
+                      ]
+                    },
+                    {
+                      "description": "http:allow-fetch -> Enables the fetch command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:allow-fetch"
+                      ]
+                    },
+                    {
+                      "description": "http:allow-fetch-cancel -> Enables the fetch_cancel command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:allow-fetch-cancel"
+                      ]
+                    },
+                    {
+                      "description": "http:allow-fetch-read-body -> Enables the fetch_read_body command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:allow-fetch-read-body"
+                      ]
+                    },
+                    {
+                      "description": "http:allow-fetch-send -> Enables the fetch_send command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:allow-fetch-send"
+                      ]
+                    },
+                    {
+                      "description": "http:deny-fetch -> Denies the fetch command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:deny-fetch"
+                      ]
+                    },
+                    {
+                      "description": "http:deny-fetch-cancel -> Denies the fetch_cancel command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:deny-fetch-cancel"
+                      ]
+                    },
+                    {
+                      "description": "http:deny-fetch-read-body -> Denies the fetch_read_body command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:deny-fetch-read-body"
+                      ]
+                    },
+                    {
+                      "description": "http:deny-fetch-send -> Denies the fetch_send command without any pre-configured scope.",
+                      "type": "string",
+                      "enum": [
+                        "http:deny-fetch-send"
+                      ]
+                    }
+                  ]
+                },
+                "allow": {
+                  "items": {
+                    "title": "ScopeEntry",
+                    "description": "HTTP scope entry object definition.",
+                    "type": "object",
+                    "required": [
+                      "url"
+                    ],
+                    "properties": {
+                      "url": {
+                        "description": "A URL that can be accessed by the webview when using the HTTP APIs. The scoped URL is matched against the request URL using a glob pattern.\n\nExamples:\n\n- \"https://*\" or \"https://**\" : allows all HTTPS urls\n\n- \"https://*.github.com/tauri-apps/tauri\": allows any subdomain of \"github.com\" with the \"tauri-apps/api\" path\n\n- \"https://myapi.service.com/users/*\": allows access to any URLs that begins with \"https://myapi.service.com/users/\"",
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "deny": {
+                  "items": {
+                    "title": "ScopeEntry",
+                    "description": "HTTP scope entry object definition.",
+                    "type": "object",
+                    "required": [
+                      "url"
+                    ],
+                    "properties": {
+                      "url": {
+                        "description": "A URL that can be accessed by the webview when using the HTTP APIs. The scoped URL is matched against the request URL using a glob pattern.\n\nExamples:\n\n- \"https://*\" or \"https://**\" : allows all HTTPS urls\n\n- \"https://*.github.com/tauri-apps/tauri\": allows any subdomain of \"github.com\" with the \"tauri-apps/api\" path\n\n- \"https://myapi.service.com/users/*\": allows access to any URLs that begins with \"https://myapi.service.com/users/\"",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "identifier"
+              ],
+              "properties": {
+                "identifier": {
+                  "oneOf": [
+                    {
                       "description": "shell:allow-execute -> Enables the execute command without any pre-configured scope.",
                       "type": "string",
                       "enum": [
@@ -353,6 +460,27 @@
           ]
         },
         {
+          "description": "deep-link:default -> Allows reading the opened deep link via the get_current command",
+          "type": "string",
+          "enum": [
+            "deep-link:default"
+          ]
+        },
+        {
+          "description": "deep-link:allow-get-current -> Enables the get_current command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "deep-link:allow-get-current"
+          ]
+        },
+        {
+          "description": "deep-link:deny-get-current -> Denies the get_current command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "deep-link:deny-get-current"
+          ]
+        },
+        {
           "description": "event:default -> Default permissions for the plugin.",
           "type": "string",
           "enum": [
@@ -413,6 +541,69 @@
           "type": "string",
           "enum": [
             "event:deny-unlisten"
+          ]
+        },
+        {
+          "description": "http:default -> Allows all fetch operations",
+          "type": "string",
+          "enum": [
+            "http:default"
+          ]
+        },
+        {
+          "description": "http:allow-fetch -> Enables the fetch command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:allow-fetch"
+          ]
+        },
+        {
+          "description": "http:allow-fetch-cancel -> Enables the fetch_cancel command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:allow-fetch-cancel"
+          ]
+        },
+        {
+          "description": "http:allow-fetch-read-body -> Enables the fetch_read_body command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:allow-fetch-read-body"
+          ]
+        },
+        {
+          "description": "http:allow-fetch-send -> Enables the fetch_send command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:allow-fetch-send"
+          ]
+        },
+        {
+          "description": "http:deny-fetch -> Denies the fetch command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:deny-fetch"
+          ]
+        },
+        {
+          "description": "http:deny-fetch-cancel -> Denies the fetch_cancel command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:deny-fetch-cancel"
+          ]
+        },
+        {
+          "description": "http:deny-fetch-read-body -> Denies the fetch_read_body command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:deny-fetch-read-body"
+          ]
+        },
+        {
+          "description": "http:deny-fetch-send -> Denies the fetch_send command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "http:deny-fetch-send"
           ]
         },
         {
@@ -728,6 +919,118 @@
           "type": "string",
           "enum": [
             "menu:deny-text"
+          ]
+        },
+        {
+          "description": "os:allow-arch -> Enables the arch command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-arch"
+          ]
+        },
+        {
+          "description": "os:allow-exe-extension -> Enables the exe_extension command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-exe-extension"
+          ]
+        },
+        {
+          "description": "os:allow-family -> Enables the family command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-family"
+          ]
+        },
+        {
+          "description": "os:allow-hostname -> Enables the hostname command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-hostname"
+          ]
+        },
+        {
+          "description": "os:allow-locale -> Enables the locale command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-locale"
+          ]
+        },
+        {
+          "description": "os:allow-os-type -> Enables the os_type command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-os-type"
+          ]
+        },
+        {
+          "description": "os:allow-platform -> Enables the platform command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-platform"
+          ]
+        },
+        {
+          "description": "os:allow-version -> Enables the version command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:allow-version"
+          ]
+        },
+        {
+          "description": "os:deny-arch -> Denies the arch command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-arch"
+          ]
+        },
+        {
+          "description": "os:deny-exe-extension -> Denies the exe_extension command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-exe-extension"
+          ]
+        },
+        {
+          "description": "os:deny-family -> Denies the family command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-family"
+          ]
+        },
+        {
+          "description": "os:deny-hostname -> Denies the hostname command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-hostname"
+          ]
+        },
+        {
+          "description": "os:deny-locale -> Denies the locale command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-locale"
+          ]
+        },
+        {
+          "description": "os:deny-os-type -> Denies the os_type command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-os-type"
+          ]
+        },
+        {
+          "description": "os:deny-platform -> Denies the platform command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-platform"
+          ]
+        },
+        {
+          "description": "os:deny-version -> Denies the version command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "os:deny-version"
           ]
         },
         {

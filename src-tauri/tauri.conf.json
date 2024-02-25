@@ -20,6 +20,21 @@
 			"csp": null
 		}
 	},
+	"plugins": {
+		"deep-link": {
+			"domains": [
+				{
+					"scheme": [
+						"https"
+					],
+					"host": "flashmind.m00nlit.dev",
+					"pathPattern": [
+						"/auth/oidc/.*/callback"
+					]
+				}
+			]
+		}
+	},
 	"bundle": {
 		"active": true,
 		"targets": "all",
