@@ -23,6 +23,7 @@ tauri-plugin-os = "2.0.0-beta"
 tauri-plugin-deep-link = { path = "./tauri-plugins-workspace/plugins/deep-link" }
 tauri-plugin-http = "2.0.0-beta.1"
 jni = "0.21.1"
+anyhow = "1"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FlashMind</string>
     <string name="main_activity_title">FlashMind</string>
+    <string name="asset_statements" translatable="false">[{ \"include\": \"https://flashmind.m00nlit.dev/.well-known/assetlinks.json\" }]</string>
 </resources>

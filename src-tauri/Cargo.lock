@@ -792,6 +792,7 @@ dependencies = [
 name = "flashmind"
 version = "0.0.0"
 dependencies = [
+ "anyhow",
  "jni",
  "serde_json",
  "tauri",
