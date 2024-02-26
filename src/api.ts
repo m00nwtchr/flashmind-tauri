@@ -1,10 +1,10 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import { createFetchAdapter } from "@haverstack/axios-fetch-adapter";
 import { fetch } from "@tauri-apps/plugin-http";
+import { queryOptions } from "@tanstack/react-query";
 
 export const API_URL = "https://flashmind.m00nlit.dev";
-
-function createAxios() {
+const instance = (() => {
 	const axiosCfg = {
 		baseURL: API_URL,
 		// timeout: 1000,
@@ -22,9 +22,7 @@ function createAxios() {
 		});
 	}
 	return axios.create(axiosCfg);
-}
-
-const instance = createAxios();
+})();
 
 interface OIDCProvider {
 	id: string;
@@ -32,10 +30,13 @@ interface OIDCProvider {
 	iconUrl?: string;
 }
 
-export const fetchProviders = async () => {
-	console.log("Fetching providers...");
-	return instance.get<OIDCProvider[]>(`/auth/oidc`).then((r) => r.data);
-};
+export const providersQueryOptions = queryOptions({
+	queryKey: ["providers"],
+	queryFn: async () => {
+		console.log("Fetching providers...");
+		return instance.get<OIDCProvider[]>(`/auth/oidc`).then((r) => r.data);
+	},
+});
 
 export function oidcUrl(provider: string) {
 	return `${API_URL}/auth/oidc/${provider}`;

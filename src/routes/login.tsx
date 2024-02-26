@@ -1,14 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useTranslation, Trans } from "react-i18next";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
-import { API_URL, fetchProviders, oidcUrl } from "../api";
+import { oidcUrl, providersQueryOptions } from "../api";
 import { openUrl } from "../tauri";
-
-const providersQueryOptions = queryOptions({
-	queryKey: ["providers"],
-	queryFn: fetchProviders,
-});
 
 export const Route = createFileRoute("/login")({
 	loader: ({ context: { queryClient } }) =>
@@ -17,7 +12,7 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginComponent() {
-	const { data: providers } = useSuspenseQuery(providersQueryOptions);
+	// const { data: providers } = useSuspenseQuery(providersQueryOptions);
 	const { t } = useTranslation("translations");
 
 	return (
