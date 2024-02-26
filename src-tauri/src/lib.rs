@@ -1,3 +1,6 @@
+#[cfg(target_os = "android")]
+mod jni;
+
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn open_url(url: String, window: tauri::Window) {
@@ -21,36 +24,20 @@ mod open_url {
 
 	#[cfg(target_os = "android")]
 	pub fn open_url(url: String, pw: PlatformWebview) {
+		use crate::jni::java_exception;
 		use jni::objects::JValueGen;
 
 		pw.jni_handle().exec(|env, activity, _webview| {
-			let action = env.new_string("android.intent.action.VIEW").unwrap();
 			let url = env.new_string(url).unwrap();
-
-			let url = env
-				.call_static_method(
-					"android/net/Uri",
-					"parse",
-					"(Ljava/lang/String;)Landroid/net/Uri;",
-					&[JValueGen::Object(&url)],
-				)
-				.expect("Uri.parse");
-
-			let intent = env
-				.new_object(
-					"android/content/Intent",
-					"(Ljava/lang/String;Landroid/net/Uri;)V",
-					&[JValueGen::Object(&action), url.borrow()],
-				)
-				.expect("Intent");
 
 			env.call_method(
 				activity,
-				"startActivity",
-				"(Landroid/content/Intent;)V",
-				&[JValueGen::Object(&intent)],
+				"openUrl",
+				"(Ljava/lang/String;)V",
+				&[JValueGen::Object(&url)],
 			)
-			.expect("Start Activity");
+			.map_err(|err| java_exception(err, env))
+			.expect("Launch Url");
 		})
 	}
 }
