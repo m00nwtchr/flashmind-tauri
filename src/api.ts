@@ -1,7 +1,7 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import { createFetchAdapter } from "@haverstack/axios-fetch-adapter";
 import { fetch } from "@tauri-apps/plugin-http";
-import { queryOptions, useMutation } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 
 export const API_URL = "https://flashmind.m00nlit.dev";
@@ -53,9 +53,14 @@ export const userQueryOptions = queryOptions({
 	queryKey: ["user"],
 	queryFn: async () => {
 		console.log("Fetching user...");
-		return instance.get<User>(`/api/auth/user`).then((r) => r.data);
+		return instance
+			.get<User>(`/api/auth/user`)
+			.then((r) => r.data)
+			.catch(() => null);
 	},
 });
+
+export const useUser = () => useQuery(userQueryOptions);
 
 export const useCodeExchange = (provider: string) =>
 	useMutation({

@@ -1,8 +1,24 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	Outlet,
+	redirect,
+} from "@tanstack/react-router";
 import NavBar from "../components/NavBar";
 import { Suspense } from "react";
+import { MyRouterContext } from "../router";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<MyRouterContext>()({
+	beforeLoad: ({ location, context: { user } }) => {
+		if (!user && !location.href.includes("login")) {
+			// eslint-disable-next-line @typescript-eslint/no-throw-literal
+			throw redirect({
+				to: "/login",
+				// search: {
+				// 	redirect: location.href,
+				// },
+			});
+		}
+	},
 	component: Root,
 });
 

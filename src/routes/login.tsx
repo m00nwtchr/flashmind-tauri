@@ -1,5 +1,5 @@
-import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Log } from "oidc-client-ts";
 
@@ -7,7 +7,6 @@ Log.setLogger(console);
 Log.setLevel(Log.INFO);
 
 import { providersQueryOptions } from "../api";
-import { useEffect } from "react";
 import LoginButton from "../components/LoginButton";
 
 export const Route = createFileRoute("/login")({
@@ -18,7 +17,6 @@ export const Route = createFileRoute("/login")({
 
 function LoginComponent() {
 	const { data: providers } = useSuspenseQuery(providersQueryOptions);
-
 	const { t } = useTranslation("translations");
 
 	return (

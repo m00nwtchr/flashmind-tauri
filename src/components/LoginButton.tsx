@@ -21,8 +21,7 @@ export default function LoginButton({ provider }: { provider: OIDCProvider }) {
 		<button
 			type="submit"
 			className="mx-1 mb-1 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold capitalize leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-			// eslint-disable-next-line @typescript-eslint/no-misused-promises
-			onClick={signin}
+			onClick={() => void signin()}
 		>
 			{provider.iconUrl && (
 				<img className="pr-2" src={provider.iconUrl}></img>
