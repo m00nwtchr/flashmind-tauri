@@ -38,13 +38,13 @@ function ProviderComponent() {
 		if (!tried) {
 			if (search.code && codeVerifier.current) {
 				setTried(true);
-				localStorage.removeItem("code_verifier");
 
 				console.log("E", codeVerifier.current);
 				exchange.mutate({
 					code: search.code,
 					code_verifier: codeVerifier.current,
 				});
+				localStorage.removeItem("code_verifier");
 				navigate({
 					from: "/login/$provider",
 					to: "/",

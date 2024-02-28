@@ -4,6 +4,8 @@ import { fetch } from "@tauri-apps/plugin-http";
 import { queryOptions, useMutation } from "@tanstack/react-query";
 
 export const API_URL = "https://flashmind.m00nlit.dev";
+// export const API_URL = "http://localhost:3000";
+
 const instance = (() => {
 	const axiosCfg = {
 		baseURL: API_URL,
@@ -24,9 +26,9 @@ const instance = (() => {
 
 export interface OIDCProvider {
 	id: string;
+	name?: string;
 	clientId: string;
 	url: string;
-	name?: string;
 	iconUrl?: string;
 }
 
@@ -38,22 +40,8 @@ export const useCodeExchange = (provider: string) =>
 
 export const providersQueryOptions = queryOptions({
 	queryKey: ["providers"],
-	// queryFn: async () => {
-	// 	console.log("Fetching providers...");
-	// 	return instance.get<OIDCProvider[]>(`/auth/oidc`).then((r) => r.data);
-	// },
-	queryFn: () => {
-		// console.log("Fetching providers...");
-		return [
-			{
-				id: "authelia",
-				clientId: "flashmind",
-				url: "https://auth.m00nlit.dev",
-			} as OIDCProvider,
-		];
+	queryFn: async () => {
+		console.log("Fetching providers...");
+		return instance.get<OIDCProvider[]>(`/api/oidc`).then((r) => r.data);
 	},
 });
-
-export function oidcUrl(provider: string) {
-	return `${API_URL}/auth/oidc/${provider}`;
-}
