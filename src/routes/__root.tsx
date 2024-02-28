@@ -1,18 +1,10 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import NavBar from "../components/NavBar";
-import { Suspense, useEffect, useState } from "react";
-// import { hasAuthParams, useAuth } from "react-oidc-context";
+import { Suspense } from "react";
 
 export const Route = createRootRoute({
 	component: Root,
 });
-
-// <Link to="/" className="[&.active]:font-bold">
-//		Home
-//	</Link>{" "}
-//	<Link to="/login" className="[&.active]:font-bold">
-//		Login
-//	</Link>
 
 function Root() {
 	return (
