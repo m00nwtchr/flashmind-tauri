@@ -2,7 +2,9 @@ import { invoke } from "@tauri-apps/api/core";
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { router } from "./router";
 
-if ("__TAURI_INTERNALS__" in window) {
+export const IS_TAURI = "__TAURI_INTERNALS__" in window;
+
+if (IS_TAURI) {
 	void onOpenUrl((urls) => {
 		const url = new URL(urls[0]);
 
@@ -25,7 +27,7 @@ if ("__TAURI_INTERNALS__" in window) {
 }
 
 export async function openUrl(url: string) {
-	if ("__TAURI_INTERNALS__" in window) {
+	if (IS_TAURI) {
 		await invoke("open_url", {
 			url,
 		});
