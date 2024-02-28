@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { QueryClient } from "@tanstack/react-query";
+import { createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
-import { User, useUser } from "./api";
+import { User } from "./api";
 
 export interface MyRouterContext {
-	user: User | null;
 	queryClient: QueryClient;
+	user: User | null;
 }
+
+export const queryClient = new QueryClient();
 
 export const router = createRouter({
 	routeTree,
 	context: {
-		queryClient: undefined!,
+		queryClient: queryClient,
 		user: undefined!,
 	},
 	defaultPreload: "intent",
@@ -24,11 +26,4 @@ declare module "@tanstack/react-router" {
 	interface Register {
 		router: typeof router;
 	}
-}
-
-export function Router() {
-	const queryClient = useQueryClient();
-	const { data: user } = useUser();
-
-	return <RouterProvider router={router} context={{ user, queryClient }} />;
 }

@@ -39,7 +39,6 @@ function ProviderComponent() {
 			if (search.code && codeVerifier.current) {
 				setTried(true);
 
-				console.log("E", codeVerifier.current);
 				exchange.mutate({
 					code: search.code,
 					code_verifier: codeVerifier.current,

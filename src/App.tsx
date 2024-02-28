@@ -1,12 +1,9 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Router } from "./router";
-
-const queryClient = new QueryClient();
+import { router } from "./router";
+import { RouterProvider } from "@tanstack/react-router";
+import { useUser } from "./api";
 
 export default function App() {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<Router />
-		</QueryClientProvider>
-	);
+	const { data: user } = useUser();
+
+	return <RouterProvider router={router} context={{ user }} />;
 }

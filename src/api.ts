@@ -1,11 +1,23 @@
 import axios, { CreateAxiosDefaults } from "axios";
 import { createFetchAdapter } from "@haverstack/axios-fetch-adapter";
 import { fetch } from "@tauri-apps/plugin-http";
-import { queryOptions, useMutation, useQuery } from "@tanstack/react-query";
+import {
+	queryOptions,
+	useMutation,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 
 export const API_URL = "https://flashmind.m00nlit.dev";
 // export const API_URL = "http://localhost:3000";
+
+// axios.interceptors.response.use(
+// 	(response) => response,
+// 	(error) => {
+// 		// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+// 		return Promise.reject("Unknown err");
+// 	},
+// );
 
 const instance = (() => {
 	const axiosCfg = {
@@ -60,7 +72,7 @@ export const userQueryOptions = queryOptions({
 	},
 });
 
-export const useUser = () => useQuery(userQueryOptions);
+export const useUser = () => useSuspenseQuery(userQueryOptions);
 
 export const useCodeExchange = (provider: string) =>
 	useMutation({
