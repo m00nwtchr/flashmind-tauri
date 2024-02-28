@@ -23,14 +23,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function Root() {
+	const { user } = Route.useRouteContext();
+
 	return (
 		<>
-			<NavBar
-				navigation={[
-					{ name: "Home", href: "/" },
-					{ name: "Login", href: "/login" },
-				]}
-			></NavBar>
+			{user && <NavBar navigation={[{ name: "Home", href: "/" }]} />}
 
 			<Suspense fallback={<Loader></Loader>}>
 				<Outlet />

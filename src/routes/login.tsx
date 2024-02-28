@@ -32,7 +32,7 @@ function LoginComponent() {
 				</h2>
 			</div>
 
-			<div className="mt-10 flex flex-col sm:mx-auto sm:w-full sm:max-w-sm sm:flex-row">
+			<div className="mt-10 flex flex-col sm:mx-auto sm:w-full sm:max-w-sm">
 				{providers.map((p) => (
 					<LoginButton key={p.id} provider={p} />
 				))}
