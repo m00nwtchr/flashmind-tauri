@@ -29,7 +29,7 @@
 					],
 					"host": "flashmind.m00nlit.dev",
 					"pathPattern": [
-						"/auth/oidc/.*/callback"
+						"/login/.*"
 					]
 				}
 			]
