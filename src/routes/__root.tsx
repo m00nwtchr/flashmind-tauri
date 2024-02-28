@@ -1,43 +1,29 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import NavBar from "../components/NavBar";
-import { Suspense } from "react";
-import { providersQueryOptions } from "../api";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { Suspense, useEffect, useState } from "react";
+// import { hasAuthParams, useAuth } from "react-oidc-context";
 
 export const Route = createRootRoute({
-	loader: ({ context: { queryClient } }) =>
-		queryClient.ensureQueryData(providersQueryOptions),
 	component: Root,
 });
 
-function Root() {
-	const { data: providers } = useSuspenseQuery(providersQueryOptions);
+// <Link to="/" className="[&.active]:font-bold">
+//		Home
+//	</Link>{" "}
+//	<Link to="/login" className="[&.active]:font-bold">
+//		Login
+//	</Link>
 
+function Root() {
 	return (
 		<>
-			<span id="urls">[]</span>
-
-			{/* <div className="p-2 flex gap-2">
-			<Link to="/" className="[&.active]:font-bold">
-				Home
-			</Link>{" "}
-			<Link to="/login" className="[&.active]:font-bold">
-				Login
-			</Link>
-		</div> */}
-			<Link to="/login" className="[&.active]:font-bold">
-				Login
-			</Link>
-			<br />
-			{document.location.toString()}
 			<NavBar
 				navigation={[
 					{ name: "Home", href: "/" },
 					{ name: "Login", href: "/login" },
 				]}
 			></NavBar>
-			<hr />
-			{/* <Loader></Loader> */}
+
 			<Suspense fallback={<Loader></Loader>}>
 				<Outlet />
 			</Suspense>

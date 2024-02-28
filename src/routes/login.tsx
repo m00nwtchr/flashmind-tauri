@@ -1,9 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { Log } from "oidc-client-ts";
 
-import { oidcUrl, providersQueryOptions } from "../api";
-import { openUrl } from "../tauri";
+Log.setLogger(console);
+Log.setLevel(Log.INFO);
+
+import { providersQueryOptions } from "../api";
+import { useEffect } from "react";
+import LoginButton from "../components/LoginButton";
 
 export const Route = createFileRoute("/login")({
 	loader: ({ context: { queryClient } }) =>
@@ -12,7 +17,8 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginComponent() {
-	// const { data: providers } = useSuspenseQuery(providersQueryOptions);
+	const { data: providers } = useSuspenseQuery(providersQueryOptions);
+
 	const { t } = useTranslation("translations");
 
 	return (
@@ -30,21 +36,10 @@ function LoginComponent() {
 
 			<div className="mt-10 flex flex-col sm:mx-auto sm:w-full sm:max-w-sm sm:flex-row">
 				{providers.map((p) => (
-					<button
-						key={p.id}
-						// href={oidcUrl(p.id)}
-						type="submit"
-						className="mx-1 mb-1 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold capitalize leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						onClick={() => openUrl(oidcUrl(p.id))}
-					>
-						{p.iconUrl && (
-							<img className="pr-2" src={p.iconUrl}></img>
-						)}
-						{p.name ?? p.id}
-					</button>
+					<LoginButton key={p.id} provider={p} />
 				))}
 			</div>
+			<Outlet />
 		</div>
 	);
 }
