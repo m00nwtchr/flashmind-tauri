@@ -4,6 +4,7 @@ import { fetch } from "@tauri-apps/plugin-http";
 import {
 	queryOptions,
 	useMutation,
+	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
@@ -51,6 +52,7 @@ export const providersQueryOptions = queryOptions({
 		console.log("Fetching providers...");
 		return instance.get<OIDCProvider[]>(`/api/oidc`).then((r) => r.data);
 	},
+	staleTime: Infinity,
 });
 
 export interface User {
@@ -70,14 +72,19 @@ export const userQueryOptions = queryOptions({
 			.then((r) => r.data)
 			.catch(() => null);
 	},
+	staleTime: 60 * 1000,
 });
 
 export const useUser = () => useSuspenseQuery(userQueryOptions);
 
-export const useCodeExchange = (provider: string) =>
-	useMutation({
+export const useCodeExchange = (provider: string) => {
+	const queryClient = useQueryClient();
+	return useMutation({
 		mutationFn: async (code: { code: string; code_verifier: string }) => {
-			const res = await instance.post(`/api/oidc/${provider}`, code);
+			const res = await instance.post<User>(
+				`/api/oidc/${provider}`,
+				code,
+			);
 
 			if (IS_TAURI) {
 				const sessionCookie = res.headers["set-cookie"]?.find(
@@ -87,5 +94,10 @@ export const useCodeExchange = (provider: string) =>
 					instance.defaults.headers.common.Cookie = sessionCookie;
 				}
 			}
+			return res.data;
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(["user"], data);
 		},
 	});
+};

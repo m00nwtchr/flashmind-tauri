@@ -1,4 +1,3 @@
-import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Log } from "oidc-client-ts";
@@ -9,13 +8,7 @@ Log.setLevel(Log.INFO);
 import { providersQueryOptions } from "../api";
 import LoginButton from "../components/LoginButton";
 
-export const Route = createFileRoute("/login")({
-	loader: ({ context: { queryClient } }) =>
-		queryClient.ensureQueryData(providersQueryOptions),
-	component: LoginComponent,
-});
-
-function LoginComponent() {
+export default function Login() {
 	const { data: providers } = useSuspenseQuery(providersQueryOptions);
 	const { t } = useTranslation("translations");
 
@@ -37,7 +30,6 @@ function LoginComponent() {
 					<LoginButton key={p.id} provider={p} />
 				))}
 			</div>
-			<Outlet />
 		</div>
 	);
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
@@ -12,12 +13,12 @@ import Loader from "./components/Loader";
 const rootElement = document.getElementById("root");
 if (rootElement) {
 	ReactDOM.createRoot(rootElement).render(
-		// <React.StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<Suspense fallback={<Loader></Loader>}>
-				<App />,
-			</Suspense>
-		</QueryClientProvider>,
-		// </React.StrictMode>,
+		<React.StrictMode>
+			<QueryClientProvider client={queryClient}>
+				<Suspense fallback={<Loader></Loader>}>
+					<App />
+				</Suspense>
+			</QueryClientProvider>
+		</React.StrictMode>,
 	);
 }
