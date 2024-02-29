@@ -8,11 +8,12 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
+import { OidcClient } from "oidc-client-ts";
 
 // export const API_URL = "https://flashmind.m00nlit.dev";
 // export const FRONT_URL = API_URL;
-export const API_URL = "http://localhost:3000";
-export const FRONT_URL = "http://localhost:1420";
+export const API_URL = "http://localhost:3000" as string;
+export const FRONT_URL = "http://localhost:1420" as string;
 
 // axios.interceptors.response.use(
 // 	(response) => response,
@@ -60,6 +61,15 @@ export const providersQueryOptions = queryOptions({
 	staleTime: Infinity,
 });
 
+export const oidcClient = (provider: OIDCProvider) =>
+	new OidcClient({
+		authority: provider.url,
+		client_id: provider.clientId,
+		redirect_uri: `${FRONT_URL}/login/${provider.id}`,
+		response_type: "code",
+		scope: "openid email profile",
+	});
+
 export interface User {
 	user_id: number;
 	provider: string;
@@ -79,7 +89,6 @@ export const userQueryOptions = queryOptions({
 	},
 	staleTime: 60 * 1000,
 });
-
 export const useUser = () => useSuspenseQuery(userQueryOptions);
 
 export const useCodeExchange = (provider: string) => {

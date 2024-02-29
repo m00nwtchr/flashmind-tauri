@@ -1,18 +1,9 @@
-import { OidcClient } from "oidc-client-ts";
-import { FRONT_URL, OIDCProvider } from "../api";
+import { OIDCProvider, oidcClient } from "../api";
 import { openUrl } from "../tauri";
 
 export default function LoginButton({ provider }: { provider: OIDCProvider }) {
 	const signin = async () => {
-		const client = new OidcClient({
-			authority: provider.url,
-			client_id: provider.clientId,
-			redirect_uri: `${FRONT_URL}/login/${provider.id}`,
-			response_type: "code",
-			scope: "openid email profile",
-		});
-
-		const req = await client.createSigninRequest({});
+		const req = await oidcClient(provider).createSigninRequest({});
 		localStorage.setItem("code_verifier", req.state.code_verifier ?? "");
 		await openUrl(req.url);
 	};
