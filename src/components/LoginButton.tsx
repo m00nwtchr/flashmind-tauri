@@ -1,5 +1,5 @@
 import { OidcClient } from "oidc-client-ts";
-import { API_URL, OIDCProvider } from "../api";
+import { FRONT_URL, OIDCProvider } from "../api";
 import { openUrl } from "../tauri";
 
 export default function LoginButton({ provider }: { provider: OIDCProvider }) {
@@ -7,7 +7,7 @@ export default function LoginButton({ provider }: { provider: OIDCProvider }) {
 		const client = new OidcClient({
 			authority: provider.url,
 			client_id: provider.clientId,
-			redirect_uri: `${API_URL}/login/${provider.id}`,
+			redirect_uri: `${FRONT_URL}/login/${provider.id}`,
 			response_type: "code",
 			scope: "openid email profile",
 		});

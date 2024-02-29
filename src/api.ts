@@ -9,8 +9,10 @@ import {
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 
-export const API_URL = "https://flashmind.m00nlit.dev";
-// export const API_URL = "http://localhost:3000";
+// export const API_URL = "https://flashmind.m00nlit.dev";
+// export const FRONT_URL = API_URL;
+export const API_URL = "http://localhost:3000";
+export const FRONT_URL = "http://localhost:1420";
 
 // axios.interceptors.response.use(
 // 	(response) => response,
@@ -23,6 +25,7 @@ export const API_URL = "https://flashmind.m00nlit.dev";
 const instance = (() => {
 	const axiosCfg = {
 		baseURL: API_URL,
+		withCredentials: API_URL !== FRONT_URL,
 	} as CreateAxiosDefaults;
 
 	if (IS_TAURI) {
@@ -50,7 +53,9 @@ export const providersQueryOptions = queryOptions({
 	queryKey: ["providers"],
 	queryFn: async () => {
 		console.log("Fetching providers...");
-		return instance.get<OIDCProvider[]>(`/api/oidc`).then((r) => r.data);
+		return instance
+			.get<OIDCProvider[]>(`/api/oidc`)
+			.then((r) => r.data.sort());
 	},
 	staleTime: Infinity,
 });
