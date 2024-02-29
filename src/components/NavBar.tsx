@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useRef } from "react";
 
 export default function NavBar({
 	navigation,
@@ -20,16 +21,7 @@ export default function NavBar({
 						<div className="hidden sm:ml-6 sm:block">
 							<div className="flex space-x-4">
 								{navigation.map((item) => (
-									<Link
-										key={item.name}
-										to={item.href}
-										className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white [&.active]:bg-gray-900 [&.active]:text-white"
-										aria-current={
-											item.current ? "page" : undefined
-										}
-									>
-										{item.name}
-									</Link>
+									<MyLink key={item.name} item={item} />
 								))}
 							</div>
 						</div>
@@ -40,5 +32,22 @@ export default function NavBar({
 				</div>
 			</div>
 		</nav>
+	);
+}
+
+function MyLink({ item }: { item: { name: string; href: string } }) {
+	const link = useRef<HTMLAnchorElement>(null);
+
+	return (
+		<Link
+			ref={link}
+			to={item.href}
+			className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white [&.active]:bg-gray-900 [&.active]:text-white"
+			aria-current={
+				link.current?.dataset.status === "active" ? "page" : undefined
+			}
+		>
+			{item.name}
+		</Link>
 	);
 }
