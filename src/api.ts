@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 import { OidcClient } from "oidc-client-ts";
+import { FlashCard } from "../../flashmind/entity/bindings";
 
 // export const API_URL = "https://flashmind.m00nlit.dev";
 // export const FRONT_URL = API_URL;
@@ -26,7 +27,8 @@ export const FRONT_URL = "http://localhost:1420" as string;
 const instance = (() => {
 	const axiosCfg = {
 		baseURL: API_URL,
-		withCredentials: API_URL !== FRONT_URL,
+		// withCredentials: API_URL !== FRONT_URL,
+		withCredentials: true,
 	} as CreateAxiosDefaults;
 
 	if (IS_TAURI) {
@@ -115,3 +117,17 @@ export const useCodeExchange = (provider: string) => {
 		},
 	});
 };
+
+export const cardQueryOptions = (id: string) =>
+	queryOptions({
+		queryKey: ["card", id],
+		queryFn: async () => {
+			console.log(`Fetching card (${id})...`);
+			return instance
+				.get<FlashCard>(`/api/flashcard/${id}`)
+				.then((r) => r.data)
+				.catch(() => null);
+		},
+		staleTime: 60 * 1000,
+	});
+export const useCard = (id: string) => useSuspenseQuery(cardQueryOptions(id));

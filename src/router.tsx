@@ -4,6 +4,12 @@ import { createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
 
+export interface Navigation {
+	name: string;
+	href: string;
+	icon?: JSX.Element;
+}
+
 export interface MyRouterContext {
 	queryClient: QueryClient;
 }

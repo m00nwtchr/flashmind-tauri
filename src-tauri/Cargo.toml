@@ -21,9 +21,10 @@ tauri-plugin-shell = "2.0.0-beta"
 serde_json = "1.0"
 tauri-plugin-os = "2.0.0-beta"
 tauri-plugin-deep-link = { git = "https://github.com/m00nwtchr/tauri-plugins-workspace.git", branch = "deeplinks-more-data" }
-tauri-plugin-http = { git = "https://github.com/m00nwtchr/tauri-plugins-workspace.git", branch = "http-cookies", features = [
+tauri-plugin-http = { git = "https://github.com/m00nwtchr/tauri-plugins-workspace.git", rev = "9d5ced2", features = [
 	"cookies",
 ] }
+# tauri-plugin-http = { path = "../tauri-plugins-workspace/plugins/http", features = ["cookies"] }
 jni = "0.21.1"
 anyhow = "1"
 
