@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 import { OidcClient } from "oidc-client-ts";
-import { FlashCard } from "../../flashmind/entity/bindings";
+import { FlashCard } from "./entities";
 
 // export const API_URL = "https://flashmind.m00nlit.dev";
 // export const FRONT_URL = API_URL;
@@ -124,9 +124,12 @@ export const cardQueryOptions = (id: string) =>
 		queryFn: async () => {
 			console.log(`Fetching card (${id})...`);
 			return instance
-				.get<FlashCard>(`/api/flashcard/${id}`)
-				.then((r) => r.data)
-				.catch(() => null);
+				.get(`/api/flashcard/${id}`)
+				.then((r) => FlashCard.parse(r.data))
+				.catch((e) => {
+					console.error(e);
+					return null;
+				});
 		},
 		staleTime: 60 * 1000,
 	});
