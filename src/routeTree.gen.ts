@@ -16,6 +16,7 @@ import { Route as LoginProviderImport } from './routes/login.$provider'
 import { Route as AuthenticatedNavImport } from './routes/_authenticated/_nav'
 import { Route as AuthenticatedNavIndexImport } from './routes/_authenticated/_nav/index'
 import { Route as AuthenticatedNavSettingsImport } from './routes/_authenticated/_nav/settings'
+import { Route as AuthenticatedNavCardIdImport } from './routes/_authenticated/_nav/card.$id'
 
 // Create/Update Routes
 
@@ -44,6 +45,11 @@ const AuthenticatedNavSettingsRoute = AuthenticatedNavSettingsImport.update({
   getParentRoute: () => AuthenticatedNavRoute,
 } as any)
 
+const AuthenticatedNavCardIdRoute = AuthenticatedNavCardIdImport.update({
+  path: '/card/$id',
+  getParentRoute: () => AuthenticatedNavRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -68,6 +74,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNavIndexImport
       parentRoute: typeof AuthenticatedNavImport
     }
+    '/_authenticated/_nav/card/$id': {
+      preLoaderRoute: typeof AuthenticatedNavCardIdImport
+      parentRoute: typeof AuthenticatedNavImport
+    }
   }
 }
 
@@ -78,6 +88,7 @@ export const routeTree = rootRoute.addChildren([
     AuthenticatedNavRoute.addChildren([
       AuthenticatedNavSettingsRoute,
       AuthenticatedNavIndexRoute,
+      AuthenticatedNavCardIdRoute,
     ]),
   ]),
   LoginProviderRoute,
