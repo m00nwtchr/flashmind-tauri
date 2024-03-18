@@ -22,7 +22,7 @@ function CardView() {
 
 	if (card) {
 		return (
-			<div className="flex justify-center">
+			<div className="m-5 flex justify-center">
 				<FlashCardComponent
 					card={card}
 					language={"pl"}

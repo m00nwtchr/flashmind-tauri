@@ -45,7 +45,7 @@ const renderItem = (item: FlashCardItem, i: number, lang: Language) => {
 	} else if ("pronunciation" in item) {
 		return (
 			<div key={`${i}-${lang}`}>
-				<span className="text-sm text-gray-500">
+				<span className="mb-2 text-sm text-gray-500">
 					[{item.pronunciation.ipa}]
 				</span>
 				{item.pronunciation.audioUrl && (
@@ -55,6 +55,12 @@ const renderItem = (item: FlashCardItem, i: number, lang: Language) => {
 		);
 	} else if ("image" in item) {
 		return <img key={i} src={item.image} className="inline" />;
+	} else if ("example" in item) {
+		return (
+			<div key={i} className="mt-1 text-start text-xs text-gray-500">
+				{item.example}
+			</div>
+		);
 	}
 };
 
@@ -88,29 +94,31 @@ export default function FlashCardComponent({
 }: {
 	card: FlashCard;
 	language: Language;
-	otherLanguage: Language;
+	otherLanguage?: Language;
 	footer?: boolean;
 }) {
 	const [reverse, setReverse] = useState(false);
 	const toggleReverse = () => setReverse(!reverse);
 
 	return (
-		<div
-			onClick={toggleReverse}
-			className="m-1 min-h-60 min-w-40 max-w-80 border p-1 text-center hover:cursor-pointer"
-		>
-			{card.content.map((section, i) => {
-				return renderSection(
-					!reverse ? language : otherLanguage,
-					section,
-					i,
-				);
-			})}
-			{footer && (
-				<div className="border-t text-start text-sm text-gray-500">
-					By {card.creator} | {card.share}
-				</div>
-			)}
+		<div className="select-none rounded-3xl border border-gray-500">
+			<div
+				onClick={toggleReverse}
+				className="m-3 min-h-80 w-60 rounded-3xl border-4 border-blue-800 p-3 text-center hover:cursor-pointer"
+			>
+				{card.content.map((section, i) => {
+					return renderSection(
+						!reverse ? language : otherLanguage ?? language,
+						section,
+						i,
+					);
+				})}
+				{footer && (
+					<div className="mb-2 mt-2 h-1 border-t text-start text-sm text-gray-500">
+						By {card.creator} | {card.share}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }

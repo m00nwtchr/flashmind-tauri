@@ -10,6 +10,7 @@ import {
 import { IS_TAURI } from "./tauri";
 import { OidcClient } from "oidc-client-ts";
 import { FlashCard } from "./entities";
+import { z } from "zod";
 
 // export const API_URL = "https://flashmind.m00nlit.dev";
 // export const FRONT_URL = API_URL;
@@ -134,3 +135,21 @@ export const cardQueryOptions = (id: string) =>
 		staleTime: 60 * 1000,
 	});
 export const useCard = (id: string) => useSuspenseQuery(cardQueryOptions(id));
+
+const FlashCardArray = z.array(FlashCard);
+
+export const cardsQueryOptions = queryOptions({
+	queryKey: ["cards"],
+	queryFn: async () => {
+		console.log(`Fetching cards...`);
+		return instance
+			.get<FlashCard[]>("/api/flashcard")
+			.then((r) => FlashCardArray.parse(r.data))
+			.catch((e) => {
+				console.error(e);
+				return null;
+			});
+	},
+	staleTime: 60 * 1000,
+});
+export const useCards = () => useSuspenseQuery(cardsQueryOptions);
