@@ -9,8 +9,14 @@ import {
 } from "@tanstack/react-query";
 import { IS_TAURI } from "./tauri";
 import { OidcClient } from "oidc-client-ts";
-import { FlashCard } from "./entities";
-import { z } from "zod";
+import {
+	CreateFlashCard,
+	Deck,
+	DeckArray,
+	FlashCard,
+	FlashCardArray,
+	UpdateDeckCards,
+} from "./entities";
 
 // export const API_URL = "https://flashmind.m00nlit.dev";
 // export const FRONT_URL = API_URL;
@@ -136,8 +142,6 @@ export const cardQueryOptions = (id: string) =>
 	});
 export const useCard = (id: string) => useSuspenseQuery(cardQueryOptions(id));
 
-const FlashCardArray = z.array(FlashCard);
-
 export const cardsQueryOptions = queryOptions({
 	queryKey: ["cards"],
 	queryFn: async () => {
@@ -153,3 +157,100 @@ export const cardsQueryOptions = queryOptions({
 	staleTime: 60 * 1000,
 });
 export const useCards = () => useSuspenseQuery(cardsQueryOptions);
+
+export const useCreateCard = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (card: CreateFlashCard) => {
+			const res = await instance.post<FlashCard>(`/api/flashcard`, card);
+
+			// if (IS_TAURI) {
+			// 	const sessionCookie = res.headers["set-cookie"]?.find(
+			// 		(cookie) => cookie.includes("session"),
+			// 	);
+			// 	if (sessionCookie) {
+			// 		instance.defaults.headers.common.Cookie = sessionCookie;
+			// 	}
+			// }
+			return res.data;
+		},
+		onSuccess: async (data) => {
+			const cards = queryClient.getQueryData<FlashCardArray>(["cards"]);
+			if (cards) {
+				cards.push(data);
+				queryClient.setQueryData(["cards"], cards);
+			} else {
+				await queryClient.invalidateQueries({ queryKey: ["cards"] });
+			}
+			queryClient.setQueryData(["card", data.uid], data);
+		},
+	});
+};
+
+export const deckQueryOptions = (id: string) =>
+	queryOptions({
+		queryKey: ["deck", id],
+		queryFn: async () => {
+			console.log(`Fetching deck (${id})...`);
+			return instance
+				.get(`/api/deck/${id}`)
+				.then((r) => Deck.parse(r.data))
+				.catch((e) => {
+					console.error(e);
+					return null;
+				});
+		},
+		staleTime: 60 * 1000,
+	});
+export const useDeck = (id: string) => useSuspenseQuery(deckQueryOptions(id));
+
+export const deckCardsQueryOptions = (id: string) =>
+	queryOptions({
+		queryKey: ["deck", id, "cards"],
+		queryFn: async () => {
+			console.log(`Fetching deck cards (${id})...`);
+			return instance
+				.get(`/api/deck/${id}/cards`)
+				.then((r) => FlashCardArray.parse(r.data))
+				.catch((e) => {
+					console.error(e);
+					return null;
+				});
+		},
+		staleTime: 60 * 1000,
+	});
+export const useDeckCards = (id: string) =>
+	useSuspenseQuery(deckCardsQueryOptions(id));
+
+export const useUpdateDeckCards = (id: string) => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: async (update: UpdateDeckCards) => {
+			const res = await instance.patch<FlashCardArray>(
+				`/api/deck/${id}/cards`,
+				update,
+			);
+
+			return res.data;
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(["deck", id, "cards"], data);
+		},
+	});
+};
+
+export const decksQueryOptions = queryOptions({
+	queryKey: ["decks"],
+	queryFn: async () => {
+		console.log(`Fetching decks...`);
+		return instance
+			.get<Deck[]>("/api/deck")
+			.then((r) => DeckArray.parse(r.data))
+			.catch((e) => {
+				console.error(e);
+				return null;
+			});
+	},
+	staleTime: 60 * 1000,
+});
+export const useDecks = () => useSuspenseQuery(decksQueryOptions);

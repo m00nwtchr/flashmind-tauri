@@ -44,10 +44,38 @@ export type FlashCardSection = z.infer<typeof FlashCardSection>;
 export const FlashCardContent = z.array(FlashCardSection);
 export type FlashCardContent = z.infer<typeof FlashCardContent>;
 
-export const FlashCard = z.object({
-	uid: z.string(),
-	creator: z.number(),
+export const CreateFlashCard = z.object({
 	share: Share,
 	content: FlashCardContent,
 });
+export type CreateFlashCard = z.infer<typeof CreateFlashCard>;
+
+export const FlashCard = CreateFlashCard.extend({
+	uid: z.string().uuid().readonly(),
+	creator: z.number().readonly(),
+});
 export type FlashCard = z.infer<typeof FlashCard>;
+
+export const FlashCardArray = z.array(FlashCard);
+export type FlashCardArray = z.infer<typeof FlashCardArray>;
+
+export const Deck = z.object({
+	uid: z.string().uuid().readonly(),
+	name: z.string(),
+	creator: z.number(),
+	// kind:
+	share: Share,
+});
+export type Deck = z.infer<typeof Deck>;
+
+export const DeckArray = z.array(Deck);
+export type DeckArray = z.infer<typeof DeckArray>;
+
+// export const UpdatePatch
+
+export const UpdateDeckCards = z.object({
+	add: z.array(z.string().uuid()).optional(),
+	remove: z.array(z.string().uuid()).optional(),
+});
+
+export type UpdateDeckCards = z.infer<typeof UpdateDeckCards>;

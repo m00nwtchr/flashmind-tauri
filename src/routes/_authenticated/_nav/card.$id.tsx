@@ -4,9 +4,7 @@ import FlashCardComponent from "../../../components/FlashCard";
 
 export const Route = createFileRoute("/_authenticated/_nav/card/$id")({
 	loader: async ({ context: { queryClient }, params: { id } }) => {
-		const card = await queryClient.ensureQueryData(
-			cardQueryOptions(id as string),
-		);
+		const card = await queryClient.ensureQueryData(cardQueryOptions(id));
 
 		if (!card) {
 			// eslint-disable-next-line @typescript-eslint/no-throw-literal
@@ -18,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/_nav/card/$id")({
 
 function CardView() {
 	const { id } = Route.useParams();
-	const { data: card } = useCard(id as string);
+	const { data: card } = useCard(id);
 
 	if (card) {
 		return (

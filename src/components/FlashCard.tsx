@@ -90,21 +90,26 @@ export default function FlashCardComponent({
 	card,
 	language,
 	otherLanguage,
+	interactive,
 	footer,
 }: {
 	card: FlashCard;
 	language: Language;
 	otherLanguage?: Language;
+	interactive?: boolean;
 	footer?: boolean;
 }) {
 	const [reverse, setReverse] = useState(false);
-	const toggleReverse = () => setReverse(!reverse);
+	const toggleReverse = () => interactive && setReverse(!reverse);
 
 	return (
-		<div className="select-none rounded-3xl border border-gray-500">
+		<div className="mx-1 select-none rounded-3xl border border-gray-500">
 			<div
 				onClick={toggleReverse}
-				className="m-3 min-h-80 w-60 rounded-3xl border-4 border-blue-800 p-3 text-center hover:cursor-pointer"
+				className={
+					"m-3 min-h-80 w-60 rounded-3xl border-4 border-blue-800 p-3 text-center" +
+					(interactive ? " hover:cursor-pointer" : "")
+				}
 			>
 				{card.content.map((section, i) => {
 					return renderSection(

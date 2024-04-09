@@ -16,7 +16,12 @@ import { Route as LoginProviderImport } from './routes/login.$provider'
 import { Route as AuthenticatedNavImport } from './routes/_authenticated/_nav'
 import { Route as AuthenticatedNavIndexImport } from './routes/_authenticated/_nav/index'
 import { Route as AuthenticatedNavSettingsImport } from './routes/_authenticated/_nav/settings'
+import { Route as AuthenticatedNavDeckIdImport } from './routes/_authenticated/_nav/deck/$id'
+import { Route as AuthenticatedNavCardCreateImport } from './routes/_authenticated/_nav/card.create'
 import { Route as AuthenticatedNavCardIdImport } from './routes/_authenticated/_nav/card.$id'
+import { Route as AuthenticatedNavDeckIdIndexImport } from './routes/_authenticated/_nav/deck/$id.index'
+import { Route as AuthenticatedNavDeckIdPlayImport } from './routes/_authenticated/_nav/deck/$id.play'
+import { Route as AuthenticatedNavDeckIdEditImport } from './routes/_authenticated/_nav/deck/$id.edit'
 
 // Create/Update Routes
 
@@ -45,10 +50,42 @@ const AuthenticatedNavSettingsRoute = AuthenticatedNavSettingsImport.update({
   getParentRoute: () => AuthenticatedNavRoute,
 } as any)
 
+const AuthenticatedNavDeckIdRoute = AuthenticatedNavDeckIdImport.update({
+  path: '/deck/$id',
+  getParentRoute: () => AuthenticatedNavRoute,
+} as any)
+
+const AuthenticatedNavCardCreateRoute = AuthenticatedNavCardCreateImport.update(
+  {
+    path: '/card/create',
+    getParentRoute: () => AuthenticatedNavRoute,
+  } as any,
+)
+
 const AuthenticatedNavCardIdRoute = AuthenticatedNavCardIdImport.update({
   path: '/card/$id',
   getParentRoute: () => AuthenticatedNavRoute,
 } as any)
+
+const AuthenticatedNavDeckIdIndexRoute =
+  AuthenticatedNavDeckIdIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedNavDeckIdRoute,
+  } as any)
+
+const AuthenticatedNavDeckIdPlayRoute = AuthenticatedNavDeckIdPlayImport.update(
+  {
+    path: '/play',
+    getParentRoute: () => AuthenticatedNavDeckIdRoute,
+  } as any,
+)
+
+const AuthenticatedNavDeckIdEditRoute = AuthenticatedNavDeckIdEditImport.update(
+  {
+    path: '/edit',
+    getParentRoute: () => AuthenticatedNavDeckIdRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -78,6 +115,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNavCardIdImport
       parentRoute: typeof AuthenticatedNavImport
     }
+    '/_authenticated/_nav/card/create': {
+      preLoaderRoute: typeof AuthenticatedNavCardCreateImport
+      parentRoute: typeof AuthenticatedNavImport
+    }
+    '/_authenticated/_nav/deck/$id': {
+      preLoaderRoute: typeof AuthenticatedNavDeckIdImport
+      parentRoute: typeof AuthenticatedNavImport
+    }
+    '/_authenticated/_nav/deck/$id/edit': {
+      preLoaderRoute: typeof AuthenticatedNavDeckIdEditImport
+      parentRoute: typeof AuthenticatedNavDeckIdImport
+    }
+    '/_authenticated/_nav/deck/$id/play': {
+      preLoaderRoute: typeof AuthenticatedNavDeckIdPlayImport
+      parentRoute: typeof AuthenticatedNavDeckIdImport
+    }
+    '/_authenticated/_nav/deck/$id/': {
+      preLoaderRoute: typeof AuthenticatedNavDeckIdIndexImport
+      parentRoute: typeof AuthenticatedNavDeckIdImport
+    }
   }
 }
 
@@ -89,6 +146,12 @@ export const routeTree = rootRoute.addChildren([
       AuthenticatedNavSettingsRoute,
       AuthenticatedNavIndexRoute,
       AuthenticatedNavCardIdRoute,
+      AuthenticatedNavCardCreateRoute,
+      AuthenticatedNavDeckIdRoute.addChildren([
+        AuthenticatedNavDeckIdEditRoute,
+        AuthenticatedNavDeckIdPlayRoute,
+        AuthenticatedNavDeckIdIndexRoute,
+      ]),
     ]),
   ]),
   LoginProviderRoute,
